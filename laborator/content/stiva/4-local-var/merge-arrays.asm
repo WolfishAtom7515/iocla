@@ -16,6 +16,7 @@ section .text
 extern printf
 global main
 main:
+
     mov eax, 0 ; counter used for array_1
     mov ebx, 0 ; counter used for array_2
     mov ecx, 0 ; counter used for the output array
@@ -24,11 +25,13 @@ merge_arrays:
     mov edx, [array_1 + 4 * eax]
     cmp edx, [array_2 + 4 * ebx]
     jg array_2_lower
+
 array_1_lower:
     mov [array_output + 4 * ecx], edx
     inc eax
     inc ecx
     jmp verify_array_end
+    
 array_2_lower:
     mov edx, [array_2 + 4 * ebx]
     mov [array_output + 4 * ecx], edx
