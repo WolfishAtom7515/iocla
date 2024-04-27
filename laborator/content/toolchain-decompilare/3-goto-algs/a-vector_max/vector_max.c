@@ -12,6 +12,16 @@ int main(void)
 	max = v[0];
 	i = 1;
 
+
 	(void) i;
 	(void) max;
+
+repeat:
+	if(i < 7){
+		if( v[i++] > max)
+			max = v[i];
+	goto repeat;
+	}
+
+	printf("%d", max);
 }
