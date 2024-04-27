@@ -10,7 +10,13 @@ main:
     mov ebx, 4 
 
     ; TODO: get maximum value. You are only allowed to use one conditional jump and push/pop instructions.
-
+    cmp eax, ebx
+    ja found
+    push eax
+    push ebx
+    pop eax
+    pop ebx 
+found:
     PRINTF32 `Max value is: %d\n\x0`, eax ; print maximum value
 
     ret
