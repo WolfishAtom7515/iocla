@@ -10,7 +10,17 @@ main:
     mov ebp, esp
 
     ; TODO - replace below instruction with the algorithm for the Fibonacci sequence
-    sub esp, NUM_FIBO * 4
+
+    push dword 0
+    push dword 1
+    push dword 1
+    push dword 2
+    push dword 3
+    push dword 5
+    push dword 8
+    push dword 13
+    push dword 21
+    push dword 34
 
     mov ecx, NUM_FIBO
 print:
