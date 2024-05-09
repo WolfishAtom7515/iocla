@@ -2,6 +2,7 @@
 
 section .data
     msg db 'Hello, world!', 0
+    sec_msg db 'Go Yummy, GO!', 0
 
 section .text
 
@@ -11,7 +12,7 @@ main:
     push ebp
     mov ebp, esp
 
-    push msg
+    push sec_msg
     call puts
     add esp, 4
 

@@ -2,6 +2,7 @@
 
 section .data
     mystring db "This is my string", 0
+    newstring db "This is a new string", 0
 
 section .text
 
@@ -13,7 +14,9 @@ main:
     mov ebp, esp
 
     PRINTF32 `[PRINTF32]: %s\n[PUTS]: \x0`, mystring
-
+    push newstring
+    call puts
+    add esp, 4
 
     ; TODO: call puts on string
 
