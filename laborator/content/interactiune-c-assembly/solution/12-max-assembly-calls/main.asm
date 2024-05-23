@@ -9,7 +9,7 @@ section .data
     len: equ $-arr
     pos: dd 0
 
-    print_format: db "max: %u on position: %u", 13, 10, 0
+    print_format: db "max: %u on position:", 10, 0
 
 section .text
 
@@ -19,24 +19,10 @@ main:
     push rbp
     mov rbp, rsp
 
-    ; Compute length in eax.
-    ; Divide by 4 (we are using integer data type of 4 bytes) by
-    ; using shr 2 (shift right with 2 bits).
-    xor rax, rax
-    mov eax, len
-    shr eax, 2
-
-    mov rdi, arr
-    xor rsi, rsi
-    mov esi, eax
-    mov rdx, pos
-    call get_max
-
     ; Print max.
     mov rdi, print_format
     xor rsi, rsi
-    mov esi, eax
-    mov rdx, [pos]
+    mov esi, 10
     call printf
 
     leave
