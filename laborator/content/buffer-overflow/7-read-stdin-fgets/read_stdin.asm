@@ -1,18 +1,23 @@
 ;
 ; IOCLA, Buffer management
 ;
-; Fill buffer with data and print it. Buffer is 64 bytes long and
-; is stored on the stack.
+; Fill buffer with data from standard input.
+; Buffer is stored on the stack.
 ;
 
+extern fgets
 extern printf
 extern puts
+extern strlen
+extern stdin
+extern gets
 
 section .data
+    read_message: db "insert buffer string: ", 0
     buffer_intro_message: db "buffer is:", 0
-    byte_format: db " %08X", 0
+    byte_format: db " %02X(%c)", 0
     null_string: db 0
-    var_message_and_format: db "var is 0x%02X", 13, 10, 0
+    var_message_and_format: db "var is 0x%08X", 13, 10, 0
 
 section .text
 
@@ -22,7 +27,7 @@ main:
     push ebp
     mov ebp, esp
 
-    ; Make room for local variabile (32 bit, 4 bytes).
+    ; Make room for local variable (32 bit, 4 bytes).
     ; Variable address is at ebp-4.
     sub esp, 4
 
@@ -33,19 +38,24 @@ main:
     ; Initialize local variable.
     mov dword [ebp-4], 0xCAFEBABE
 
-    ; Fill data in buffer: buffer[i] = i+1
-    ; Use ebx as buffer base address, ecx as index and dl as value.
-    ; dl needs to be ecx+1.
-    ; Buffer length is 64 bytes.
+    ; Read buffer from standard input.
+    push read_message
+    call printf
+    add esp, 4
+
     lea ebx, [ebp-68]
-    xor ecx, ecx
-fill_byte:
-    mov dl, cl
-    inc dl
-    mov byte [ebx+ecx], dl
-    inc ecx
-    cmp ecx, 64
-    jl fill_byte
+    push dword [stdin]
+    push 68
+    push ebx
+    call fgets
+    add esp, 12
+
+    ; Push string length on the stack.
+    ; String length is stored at ebp-72.
+    push ebx
+    call strlen
+    add esp, 4
+    push eax
 
     ; Print data in buffer.
     push buffer_intro_message
@@ -61,28 +71,22 @@ print_byte:
 
     ; Print current byte.
     push eax
+    push eax
     push byte_format
     call printf
-    add esp, 8
+    add esp, 12
 
     pop ecx	; restore ecx
     inc ecx
-    cmp ecx, 64
+    cmp ecx, [ebp-72]
     jl print_byte
 
-    ; Print new line. C equivalent instruction is puts("").
     push null_string
     call puts
     add esp, 4
 
-    lea ebx, [ebp-4]
-    mov byte [ebx],  0xEF
-    mov byte [ebx + 1],  0xBE
-    mov byte [ebx + 2],  0xAD
-    mov byte [ebx + 3],  0xDE
-
     ; Print local variable.
-    mov eax, [ebp-4]  ; [ebp-8] 0x403F3E3D  -- afiseaza de pe buffer
+    mov eax, [ebp-4]
     push eax
     push var_message_and_format
     call printf
