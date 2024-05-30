@@ -2,6 +2,16 @@
 
 În acest laborator veți interacționa cu majoritatea noțiunilor prezentate pe parcursul semestrului prin intermediul unor taskuri de tip `Capture-The-Flag`. Acestea vor testa înțelegerea și stăpânirea metodelor și toolurilor specifice de analiză statică și dinamică, înțelegerea procesului de compilare, a limbajului de asamblare - sintaxă, regiștri, lucru cu memoria, funcții - dar și capacitatea de identificare și exploatare a unor vulnerabilități simple de tip buffer overflow.
 
+disassembly <name> //gdb
+gcc -m32 <name> <name2>
+string
+nm
+objdump -D / -d
+readelf -s 
+gdb -p <pid>
+ghidra
+dogbolt
+
 ## Exerciții
 
 > **NOTE:** Fiecare dintre exerciții ascunde un flag cu formatul `iocla_{<string>}`
